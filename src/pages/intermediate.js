@@ -1,6 +1,6 @@
 import React from "react";
 
-function Easy() {
+function Intermediate() {
     
     const game = {
         width: "700px",
@@ -18,14 +18,16 @@ function Easy() {
     };
 
     const h1 = {
-        color: "white"
+        color: "black"
     };
 
     return (
-        <div style={game}>
-            <h1 style={h1}>Hello</h1>
+        <div>
+            <h1 style = {h1}>Hello World</h1>
+            <div style={game}>
+            </div>
         </div>
     )
 }
 
-export default Easy;
+export default Intermediate;
