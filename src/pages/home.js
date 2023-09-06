@@ -21,7 +21,9 @@ function Home() {
                 </div>
 
                 <div className="box">
-
+                     <Link to="./pages/hard">
+                        <button>Hard</button>
+                    </Link>
                 </div>
            </div>
         </div>
