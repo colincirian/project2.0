@@ -1,58 +1,89 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function Easy() {
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        const displayTime = document.getElementByClassName('time');
-        const displayScore = document.getElementByClassName('.score');
-        const game = document.getElementByClassName('game');
-        const alert = document.getElementById('alert');
+  const [time, setTime] = useState(60);
+  const [score, setScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
-        let gameOver = False;
-        let time = 60;
-        let score = 0;
-
-        displayTime.innerHTML = `Time: ${time}`;
-        displayScore.textContent = `Score: ${score}`;
-
-        let timer = setInterval(function() {
-            time--; //Decrement time 
-            displayTime.innerHTML = `Time: ${time}`;
-
-            if (time === 0) {
-            clearInterval(timer); // Stops the timer
-            alert.textContent`${alert}`;
-            gameOver = True;
-            }
-        }, 1000);
-
-        target.addEventListener("click", function () {
-            if (time > 0) { // Only allow clicks while game is running
-                score++;
-                displayScore.textContent = `Score: ${score}`;
-            };
+  useEffect(() => {
+    const displayTime = document.getElementById("timer");
+    const displayScore = document.getElementById("score");
+    const game = document.querySelector(".game");
+    const alert = document.getElementById("alert");
+    const target = document.querySelector(".target");
+  
+    displayTime.textContent = `Time: ${time}`;
+    displayScore.textContent = `Score: ${score}`;
+  
+    let timer;
+  
+    if (!gameOver) {
+      timer = setInterval(() => {
+        setTime((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setGameOver(true);
+            return 0; // Ensure the time doesn't go below zero
+          } else {
+            return prevTime - 1;
+          }
         });
+      }, 1000);
+    }
+  
+    return () => {
+      clearInterval(timer); // reset the timer back to 0
+    };
+  
+    target.addEventListener("click", () => {
+      if (time > 0 && !gameOver) {
+        setScore((prevScore) => prevScore + 1);
+        spawnTarget();
+      }
     });
 
     function spawnTarget() {
         if (gameOver) {
-            target.style.display = "none";
-            return;
+          alert.style.display = "block"; // Show the game over message
+          return;
         }
-    };
+      
+        const gameWidth = game.clientWidth;
+        const gameHeight = game.clientHeight;
+        const targetWidth = target.offsetWidth;
+        const targetHeight = target.offsetHeight;
+      
+        // Set the position of the target
+        const left = Math.floor(Math.random() * (gameWidth - targetWidth)) + "px";
+        const top = Math.floor(Math.random() * (gameHeight - targetHeight)) + "px";
+      
+        // Apply the position to the target element
+        target.style.left = left;
+        target.style.top = top;
+      }      
 
-    return (
-        <div className="game">
-            <h1 className="h1">Hello</h1>
-            <h4 className="time">Time: 0</h4>
-            <h4 className="score">Score: </h4>
-            <div>
-                <img className="target" alt="target" src="../img/target.jpg"/>
+    spawnTarget();
 
-            </div>
-            <h2 id="alert">GAME OVER!</h2>
-        </div>
-    )
+    target.addEventListener("click", () => {
+      spawnTarget();
+    });
+  }, [time, score, gameOver]);
+
+  return (
+    <div className="game">
+      <section className="h4-container">
+        <h4 className="h4" id="timer">
+          Time: {time}
+        </h4>
+        <h4 className="h4" id="score">
+          Score: {score}
+        </h4>
+      </section>
+      <button className="start-btn">START GAME</button>
+      <img className="target" alt="target" src="../img/target.jpg" />
+      <h2 id="alert">{gameOver ? "GAME OVER" : ""}</h2>
+    </div>
+  );
 }
 
 export default Easy;

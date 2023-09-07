@@ -37,10 +37,6 @@ a {
     color: white;
 }
 
-.h1 {
-    color: white;
-}
-
 .game {
     width: 800px;
     height: 625px;
@@ -61,4 +57,14 @@ a {
     width: 50px;
     background-color: black;
     border-radius: 90rem;
+    display: flex;
+    margin-top: 200px;
+}
+
+.h4-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 33rem;
+    margin-right: 20rem;
 }
