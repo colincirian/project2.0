@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 
+function buttonHandler() {
+  console.log("")
+}
+document.addEventListener("DOMContentLoaded", function() {
+  const startButton = document.getElementsById('start-btn');
+  startButton.addEventListener("click", buttonHandler);
+});
+
 function Easy() {
   const [time, setTime] = useState(60);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [startGame, setStartGame] = useState(true);
 
   useEffect(() => {
     const displayTime = document.getElementById("timer");
@@ -14,7 +23,12 @@ function Easy() {
   
     displayTime.textContent = `Time: ${time}`;
     displayScore.textContent = `Score: ${score}`;
-  
+    
+    function start() {
+      return;
+    };
+
+
     let timer;
   
     if (!gameOver) {
@@ -23,7 +37,7 @@ function Easy() {
           if (prevTime <= 1) {
             clearInterval(timer);
             setGameOver(true);
-            return 0; // Ensure the time doesn't go below zero
+            return 0; 
           } else {
             return prevTime - 1;
           }
@@ -79,7 +93,7 @@ function Easy() {
           Score: {score}
         </h4>
       </section>
-      <button className="start-btn">START GAME</button>
+      <button id="start-btn">START GAME</button>
       <img className="target" alt="target" src="../img/target.jpg" />
       <h2 id="alert">{gameOver ? "GAME OVER" : ""}</h2>
     </div>
